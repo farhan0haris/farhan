@@ -1,10 +1,13 @@
 import { ThemeProvider } from './features/theme'
+import { ExplorationProvider } from './state'
 import { AppShell } from './components/layout/AppShell'
 
 export function App() {
   return (
     <ThemeProvider>
-      <AppShell />
+      <ExplorationProvider>
+        <AppShell />
+      </ExplorationProvider>
     </ThemeProvider>
   )
 }
