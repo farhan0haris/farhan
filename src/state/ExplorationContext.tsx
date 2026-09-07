@@ -9,6 +9,7 @@ import {
 import type { Entity, EntityId } from '../core/types'
 import { getEntity } from '../core/registry'
 import { ExplorationActionTypes } from '../core/actions'
+import { resolveContext, type ResolvedContext } from '../core/relationships'
 import type { ExplorationState } from './types'
 import {
   explorationReducer,
@@ -25,6 +26,9 @@ export interface ExplorationContextValue {
 
   /** Currently focused Entity resolved from the canonical registry */
   readonly focusedEntity: Entity | undefined
+
+  /** Fully resolved contextual information and available actions for the focused entity */
+  readonly resolvedContext: ResolvedContext | undefined
 
   /** Currently inspected Entity resolved from the canonical registry, if any */
   readonly inspectedEntity: Entity | undefined
@@ -73,6 +77,11 @@ export function ExplorationProvider({
     [state.focusedEntityId]
   )
 
+  const resolvedContext = useMemo(
+    () => resolveContext(state.focusedEntityId),
+    [state.focusedEntityId]
+  )
+
   const inspectedEntity = useMemo(
     () => (state.inspectedEntityId ? getEntity(state.inspectedEntityId) : undefined),
     [state.inspectedEntityId]
@@ -108,6 +117,7 @@ export function ExplorationProvider({
     () => ({
       state,
       focusedEntity,
+      resolvedContext,
       inspectedEntity,
       canGoBack,
       focus,
@@ -120,6 +130,7 @@ export function ExplorationProvider({
     [
       state,
       focusedEntity,
+      resolvedContext,
       inspectedEntity,
       canGoBack,
       focus,
