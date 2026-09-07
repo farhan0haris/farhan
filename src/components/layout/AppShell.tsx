@@ -1,70 +1,54 @@
-import { useTheme } from '../../features/theme'
+import { useState } from 'react'
+import { ExplorationHeader } from '../exploration/ExplorationHeader'
+import { ExplorationStage } from '../exploration/ExplorationStage'
+import { InspectionLens } from '../exploration/InspectionLens'
 
 export function AppShell() {
-  const { theme, resolvedTheme, setTheme } = useTheme()
+  const [pointerPos, setPointerPos] = useState<{ x: number; y: number } | null>(null)
 
   return (
-    <div className="min-h-screen flex flex-col justify-between p-6 sm:p-10 max-w-4xl mx-auto">
-      <header className="flex items-center justify-between border-b border-border-subtle pb-4">
-        <div>
-          <span className="text-xs font-mono uppercase tracking-widest text-fg-muted">
-            Interactive Portfolio
-          </span>
-          <h1 className="text-lg font-medium text-fg-primary tracking-tight">Farhan Haris</h1>
-        </div>
+    <div
+      onPointerMove={(e) => setPointerPos({ x: e.clientX, y: e.clientY })}
+      className="w-screen h-screen flex flex-col bg-bg-base text-fg-primary transition-colors overflow-hidden select-text relative"
+    >
+      {/* Background Atmosphere Layers: Subtle Grid & Ambient Illumination */}
+      <div className="fixed inset-0 bg-ambient-grid opacity-[0.22] dark:opacity-[0.10] pointer-events-none z-0" />
+      <div className="fixed inset-0 ambient-illumination pointer-events-none z-0" />
 
-        <div className="flex items-center gap-1 bg-bg-surface-elevated p-1 rounded-md border border-border-subtle text-xs font-mono">
-          {(['system', 'light', 'dark'] as const).map((mode) => (
-            <button
-              key={mode}
-              type="button"
-              id={`theme-btn-${mode}`}
-              onClick={() => setTheme(mode)}
-              className={`px-2.5 py-1 rounded capitalize transition-colors ${
-                theme === mode
-                  ? 'bg-accent-primary text-accent-fg font-medium'
-                  : 'text-fg-secondary hover:text-fg-primary hover:bg-bg-subtle'
-              }`}
-            >
-              {mode}
-            </button>
-          ))}
-        </div>
-      </header>
+      {/* Subtle Reactive Cursor Proximity Illumination (Desktop) */}
+      {pointerPos && (
+        <div
+          className="fixed pointer-events-none transition-opacity duration-300 z-0 hidden sm:block"
+          style={{
+            left: pointerPos.x - 300,
+            top: pointerPos.y - 300,
+            width: 600,
+            height: 600,
+            background: 'radial-gradient(circle, rgba(37, 99, 235, 0.04), transparent 70%)',
+            borderRadius: '50%',
+          }}
+        />
+      )}
 
-      <main className="my-auto py-12">
-        <div className="inline-block px-3 py-1 rounded-full text-xs font-mono bg-accent-subtle text-accent-primary border border-border-subtle mb-4">
-          Phase 1 — Application Foundation
-        </div>
-        <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-fg-primary mb-3">
-          Exploration System Shell
-        </h2>
-        <p className="text-fg-secondary text-base max-w-xl leading-relaxed mb-6">
-          The application foundation and design token architecture have initialized successfully.
-          Future phases will introduce the structured data model, exploration engine, and command
-          palette.
-        </p>
+      {/* Top Editorial Exploration Header */}
+      <ExplorationHeader />
 
-        <div className="p-4 rounded-lg bg-bg-surface border border-border-subtle font-mono text-xs space-y-1 text-fg-muted">
-          <div>
-            Active Theme Preference:{' '}
-            <span className="text-fg-primary font-medium">{theme}</span>
-          </div>
-          <div>
-            Resolved Color Scheme:{' '}
-            <span className="text-fg-primary font-medium">{resolvedTheme}</span>
-          </div>
-          <div>
-            Environment:{' '}
-            <span className="text-fg-primary font-medium">Vite + React 19 + TypeScript + Tailwind v4</span>
-          </div>
-        </div>
+      {/* Main Persistent 2D Exploration Stage (100vw × calc(100vh - 3.5rem)) */}
+      <main
+        className="relative z-10 flex-1 min-h-0 w-full flex flex-col overflow-hidden"
+        id="exploration-main"
+      >
+        <section
+          aria-label="Interactive Exploration Stage"
+          className="flex-1 min-h-0 w-full flex flex-col overflow-y-auto lg:overflow-hidden scrollbar-none focus:outline-none"
+          tabIndex={0}
+        >
+          <ExplorationStage />
+        </section>
       </main>
 
-      <footer className="border-t border-border-subtle pt-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-fg-subtle font-mono">
-        <span>Farhan Haris &copy; {new Date().getFullYear()}</span>
-        <span className="text-[11px] text-fg-muted">Temporary Foundation Shell</span>
-      </footer>
+      {/* Secondary Analytical Lens Layer (Inspection) */}
+      <InspectionLens />
     </div>
   )
 }
