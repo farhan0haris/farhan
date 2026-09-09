@@ -1,34 +1,38 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Farhan Haris — Interactive Portfolio Exploration System" />
-    <meta name="color-scheme" content="light dark" />
+    <meta name="color-scheme" content="dark" />
     <title>Farhan Haris — Interactive Portfolio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
     <script>
-      (function () {
-        try {
-          const stored = localStorage.getItem('theme-preference');
-          const theme = stored || 'system';
-          const isDark =
-            theme === 'dark' ||
-            (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-          if (isDark) {
-            document.documentElement.classList.add('dark');
-            document.documentElement.style.colorScheme = 'dark';
-          } else {
-            document.documentElement.classList.remove('dark');
-            document.documentElement.style.colorScheme = 'light';
-          }
-        } catch (_) {}
-      })();
+      document.documentElement.classList.add('dark');
+      document.documentElement.style.colorScheme = 'dark';
+      window.addEventListener('error', function (e) {
+        var errDiv = document.createElement('div');
+        errDiv.id = 'debug-error-overlay';
+        errDiv.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:#0f1117;color:#f87171;padding:24px;z-index:9999999;font-family:monospace;font-size:14px;overflow:auto;white-space:pre-wrap;';
+        errDiv.innerHTML = '<h2 style="color:#ef4444;margin-top:0">APPLICATION RUNTIME ERROR</h2>' +
+          '<strong>Message:</strong> ' + e.message + '\n' +
+          '<strong>Source:</strong> ' + e.filename + ':' + e.lineno + ':' + e.colno + '\n\n' +
+          '<strong>Stack:</strong>\n' + (e.error ? e.error.stack : 'No stack');
+        document.body.appendChild(errDiv);
+      });
+      window.addEventListener('unhandledrejection', function (e) {
+        var errDiv = document.createElement('div');
+        errDiv.id = 'debug-rejection-overlay';
+        errDiv.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:#0f1117;color:#fbbf24;padding:24px;z-index:9999999;font-family:monospace;font-size:14px;overflow:auto;white-space:pre-wrap;';
+        errDiv.innerHTML = '<h2 style="color:#f59e0b;margin-top:0">UNHANDLED PROMISE REJECTION</h2>' +
+          '<strong>Reason:</strong> ' + (e.reason ? (e.reason.stack || e.reason) : 'Unknown');
+        document.body.appendChild(errDiv);
+      });
     </script>
   </head>
   <body>

@@ -80,26 +80,31 @@ export function InspectionLens() {
             </button>
           </div>
 
-          {/* Explicit Relationship Bridge */}
+          {/* Explicit Relationship Bridge in Antique Gold & Deep Violet */}
           {focusedEntity && (
-            <div className="p-3.5 rounded-lg bg-bg-surface-elevated border border-border-strong text-xs font-mono space-y-2">
-              <div className="text-[10px] text-fg-subtle uppercase tracking-wider font-medium">
-                Relationship Bridge
+            <div className="p-4 rounded-lg bg-bg-surface-elevated/70 border border-accent-primary/30 text-xs font-mono space-y-3">
+              <div className="text-[10px] text-accent-primary uppercase tracking-widest font-bold flex items-center justify-between">
+                <span>ARCHITECTURAL PROVENANCE</span>
+                <span className="px-2 py-0.5 rounded-full bg-accent-subtle text-accent-primary text-[9px] uppercase font-semibold">
+                  {bridgeRelationship ? bridgeRelationship.kind : 'contextual'}
+                </span>
               </div>
-              <div className="flex flex-col gap-1 text-fg-primary">
-                <div className="flex items-center gap-2">
-                  <span className="text-fg-muted font-mono text-[11px]">Focus:</span>
-                  <span className="font-semibold text-fg-primary">[{focusedEntity.name}]</span>
+              <div className="flex flex-col items-center justify-center gap-1.5 py-1 text-center select-none">
+                <span className="font-bold text-sm tracking-wider uppercase text-fg-primary">
+                  {focusedEntity.name}
+                </span>
+                <div className="flex flex-col items-center gap-0.5 text-accent-primary my-0.5">
+                  <span className="text-sm leading-none font-bold">↓</span>
+                  <span className="text-[10px] font-bold tracking-widest uppercase py-0.5 px-2 rounded bg-accent-subtle border border-accent-primary/25">
+                    {bridgeRelationship
+                      ? `${bridgeRelationship.type.replace(/-/g, ' ')} · ${bridgeRelationship.kind}`
+                      : 'CONTEXTUAL RELATIONSHIP'}
+                  </span>
+                  <span className="text-sm leading-none font-bold">↓</span>
                 </div>
-                <div className="text-accent-primary font-medium text-[11px] pl-4">
-                  {bridgeRelationship
-                    ? `↓ ${bridgeRelationship.description} (${bridgeRelationship.kind}) ↓`
-                    : '↓ Contextual connection ↓'}
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-fg-muted font-mono text-[11px]">Inspecting:</span>
-                  <span className="font-semibold text-accent-primary">[{inspectedEntity.name}]</span>
-                </div>
+                <span className="font-bold text-sm tracking-wider uppercase text-accent-primary">
+                  {inspectedEntity.name}
+                </span>
               </div>
             </div>
           )}

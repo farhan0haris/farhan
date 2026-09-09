@@ -3,48 +3,31 @@
 
 @layer base {
   :root {
-    --color-bg-base: #fbfbfd;
-    --color-bg-surface: #ffffff;
-    --color-bg-surface-elevated: #f4f4f7;
-    --color-bg-subtle: #eeeff3;
+    /* Pure Dark Theme: Deep Violet Environmental Base with Antique Gold Accents */
+    --color-bg-base: #170f1c;
+    --color-bg-surface: #221628;
+    --color-bg-surface-elevated: #2c1f33;
+    --color-bg-subtle: #120b16;
 
-    --color-fg-primary: #121316;
-    --color-fg-secondary: #4b4f58;
-    --color-fg-muted: #737887;
-    --color-fg-subtle: #9ba0b0;
+    --color-fg-primary: #f7f4ee;
+    --color-fg-secondary: #c9beaf;
+    --color-fg-muted: #9e9183;
+    --color-fg-subtle: #796c5f;
 
-    --color-border-subtle: #e5e7eb;
-    --color-border-strong: #d1d5db;
+    --color-border-subtle: #36243f;
+    --color-border-strong: #4f365c;
 
-    --color-accent-primary: #2563eb;
-    --color-accent-hover: #1d4ed8;
-    --color-accent-subtle: #eff6ff;
-    --color-accent-fg: #ffffff;
+    --color-accent-primary: #d2c0ab;
+    --color-accent-hover: #e8dbcc;
+    --color-accent-subtle: rgba(185, 163, 139, 0.16);
+    --color-accent-fg: #170f1c;
 
+    --color-deep-violet: #2c1f33;
+    --color-antique-gold: #b9a38b;
+
+    --font-display: 'Fraunces', 'Instrument Serif', Georgia, serif;
     --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-
-    color-scheme: light;
-  }
-
-  .dark {
-    --color-bg-base: #0c0d0e;
-    --color-bg-surface: #141618;
-    --color-bg-surface-elevated: #1b1e22;
-    --color-bg-subtle: #22262c;
-
-    --color-fg-primary: #f2f3f5;
-    --color-fg-secondary: #c0c4cc;
-    --color-fg-muted: #8b909a;
-    --color-fg-subtle: #5f6570;
-
-    --color-border-subtle: #23272e;
-    --color-border-strong: #333842;
-
-    --color-accent-primary: #3b82f6;
-    --color-accent-hover: #60a5fa;
-    --color-accent-subtle: #172554;
-    --color-accent-fg: #ffffff;
 
     color-scheme: dark;
   }
@@ -83,40 +66,38 @@
   --color-accent-subtle: var(--color-accent-subtle);
   --color-accent-fg: var(--color-accent-fg);
 
+  --font-display: var(--font-display);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
 }
 
 /* ---------------------------------------------------------------------------
- * Spatial Exploration Environment Styling (Quiet, Editorial, Atmospheric)
+ * Spatial Exploration Environment Styling (Antique Gold × Deep Violet)
  * --------------------------------------------------------------------------- */
 
-.bg-ambient-grid {
-  background-image: 
-    linear-gradient(to right, var(--color-border-subtle) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--color-border-subtle) 1px, transparent 1px);
-  background-size: 48px 48px;
-  opacity: 0.25;
+/* Organic Film Grain Texture Overlay */
+.env-grain {
+  position: absolute;
+  inset: -100%;
+  width: 300%;
+  height: 300%;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.55;
+  animation: env-grain-drift 8s steps(10) infinite;
 }
 
-.dark .bg-ambient-grid {
-  opacity: 0.12;
+.dark .env-grain {
+  opacity: 0.45;
 }
 
-.ambient-illumination {
-  background: radial-gradient(
-    circle 800px at 50% 250px,
-    rgba(37, 99, 235, 0.04),
-    transparent 75%
-  );
-}
-
-.dark .ambient-illumination {
-  background: radial-gradient(
-    circle 900px at 50% 250px,
-    rgba(59, 130, 246, 0.05),
-    transparent 80%
-  );
+@keyframes env-grain-drift {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-3%, -5%); }
+  40% { transform: translate(4%, 3%); }
+  60% { transform: translate(-5%, 4%); }
+  80% { transform: translate(3%, -4%); }
+  100% { transform: translate(0, 0); }
 }
 
 /* Custom technical scrollbar */
@@ -138,7 +119,7 @@
 @keyframes stage-fade {
   from {
     opacity: 0;
-    transform: scale(0.985) translateY(6px);
+    transform: scale(0.99) translateY(4px);
   }
   to {
     opacity: 1;
@@ -147,15 +128,147 @@
 }
 
 .animate-stage {
-  animation: stage-fade 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: stage-fade 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.layer-focus {
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+/* ---------------------------------------------------------------------------
+ * Particle Field (Antique Gold floating embers)
+ * --------------------------------------------------------------------------- */
+
+.env-particle {
+  position: absolute;
+  border-radius: 50%;
+  background-color: var(--color-accent-primary);
+  pointer-events: none;
+  opacity: calc(var(--base-opacity, 0.28) * var(--inspect-mult, 1) + var(--cursor-boost, 0));
+  transition: left 400ms ease-out, top 400ms ease-out;
+  box-shadow: 0 0 6px rgba(185, 163, 139, 0.35);
 }
 
-.layer-context {
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+.dark .env-particle {
+  background-color: #d2c0ab;
+  box-shadow: 0 0 8px rgba(210, 192, 171, 0.45);
 }
 
+.env-particle-drift {
+  animation: env-drift var(--drift-duration, 40s) var(--drift-delay, 0s) ease-in-out infinite;
+}
 
+.env-particle-idle {
+  animation: env-drift-idle var(--drift-duration, 50s) var(--drift-delay, 0s) ease-in-out infinite;
+}
+
+@keyframes env-drift {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(var(--drift-ax, 10px), calc(-1 * var(--drift-ay, 8px))); }
+  50% { transform: translate(calc(-0.7 * var(--drift-ax, 10px)), var(--drift-ay, 8px)); }
+  75% { transform: translate(var(--drift-ax, 10px), calc(0.4 * var(--drift-ay, 8px))); }
+}
+
+@keyframes env-drift-idle {
+  0%, 100% { transform: translate(0, 0); }
+  50% { transform: translate(calc(0.3 * var(--drift-ax, 10px)), calc(-0.3 * var(--drift-ay, 8px))); }
+}
+
+/* ---------------------------------------------------------------------------
+ * Palette-Driven Atmosphere Gradients (Deep Violet × Antique Gold)
+ * --------------------------------------------------------------------------- */
+
+/* 1. Profile Atmosphere: Broad warm violet radiance with antique gold core */
+.env-atmos-profile {
+  background:
+    radial-gradient(circle 900px at 50% 38%, rgba(44, 31, 51, 0.12), transparent 75%),
+    radial-gradient(circle 600px at 50% 42%, rgba(185, 163, 139, 0.08), transparent 70%);
+}
+.dark .env-atmos-profile {
+  background:
+    radial-gradient(circle 1000px at 50% 36%, rgba(68, 45, 80, 0.45), transparent 75%),
+    radial-gradient(circle 650px at 50% 40%, rgba(200, 180, 155, 0.14), transparent 70%);
+}
+
+/* 2. Project Atmosphere: Deeper concentrated violet field with small antique-gold highlights */
+.env-atmos-project {
+  background:
+    radial-gradient(ellipse 850px 580px at 50% 30%, rgba(44, 31, 51, 0.16), transparent 75%),
+    radial-gradient(ellipse 550px 380px at 50% 28%, rgba(185, 163, 139, 0.12), transparent 65%);
+}
+.dark .env-atmos-project {
+  background:
+    radial-gradient(ellipse 950px 620px at 50% 30%, rgba(72, 44, 86, 0.52), transparent 75%),
+    radial-gradient(ellipse 600px 420px at 50% 28%, rgba(210, 192, 171, 0.18), transparent 65%);
+}
+
+/* 3. Technology Atmosphere: Structured violet geometry with gold accents */
+.env-atmos-technology {
+  background:
+    radial-gradient(ellipse 800px 520px at 65% 32%, rgba(44, 31, 51, 0.15), transparent 70%),
+    radial-gradient(ellipse 650px 450px at 32% 62%, rgba(185, 163, 139, 0.11), transparent 70%);
+}
+.dark .env-atmos-technology {
+  background:
+    radial-gradient(ellipse 900px 560px at 65% 32%, rgba(78, 48, 92, 0.48), transparent 70%),
+    radial-gradient(ellipse 700px 480px at 32% 62%, rgba(210, 192, 171, 0.16), transparent 70%);
+}
+
+/* 4. Skill Atmosphere: Soft warm-violet atmosphere */
+.env-atmos-skill {
+  background:
+    radial-gradient(ellipse 950px 650px at 40% 45%, rgba(44, 31, 51, 0.14), transparent 75%),
+    radial-gradient(ellipse 700px 500px at 45% 42%, rgba(185, 163, 139, 0.10), transparent 70%);
+}
+.dark .env-atmos-skill {
+  background:
+    radial-gradient(ellipse 1000px 700px at 40% 45%, rgba(66, 42, 78, 0.46), transparent 75%),
+    radial-gradient(ellipse 750px 540px at 45% 42%, rgba(205, 185, 162, 0.15), transparent 70%);
+}
+
+/* 5. Timeline Atmosphere: Long horizontal violet/gold flow */
+.env-atmos-timeline {
+  background: linear-gradient(
+    90deg,
+    transparent 2%,
+    rgba(44, 31, 51, 0.15) 25%,
+    rgba(185, 163, 139, 0.13) 50%,
+    rgba(44, 31, 51, 0.15) 75%,
+    transparent 98%
+  );
+  background-size: 200% 100%;
+  animation: env-atmos-timeline-drift 32s ease-in-out infinite alternate;
+}
+.dark .env-atmos-timeline {
+  background: linear-gradient(
+    90deg,
+    transparent 2%,
+    rgba(75, 46, 90, 0.48) 25%,
+    rgba(210, 192, 171, 0.20) 50%,
+    rgba(75, 46, 90, 0.48) 75%,
+    transparent 98%
+  );
+  background-size: 200% 100%;
+  animation: env-atmos-timeline-drift 32s ease-in-out infinite alternate;
+}
+
+@keyframes env-atmos-timeline-drift {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .env-grain {
+    animation: none !important;
+  }
+
+  .env-particle-drift,
+  .env-particle-idle {
+    animation: none !important;
+  }
+
+  .env-atmos-timeline {
+    animation: none !important;
+  }
+
+  .env-particle {
+    transition: none !important;
+  }
+}
